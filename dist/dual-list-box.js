@@ -34,7 +34,8 @@
                 moveAllBtn: true,               // Whether the append all button is available.
                 maxAllBtn:  500,                // Maximum size of list in which the all button works without warning. See below.
                 selectClass:'form-control',
-                warning:    'Are you sure you want to move this many items? Doing so can cause your browser to become unresponsive.'
+                warning:    'Are you sure you want to move this many items? Doing so can cause your browser to become unresponsive.',
+                sort:       true
             };
 
             var htmlOptions = {
@@ -49,7 +50,8 @@
                 textLength: $(this).data('textLength'),
                 moveAllBtn: $(this).data('moveAllBtn'),
                 maxAllBtn:  $(this).data('maxAllBtn'),
-                selectClass:$(this).data('selectClass')
+                selectClass:$(this).data('selectClass'),
+                sort:       $(this).data('sort')
             };
 
             var options = $.extend({}, defaults, htmlOptions, paramOptions);
@@ -142,8 +144,10 @@
                 default: break;
             }
 
-            unselected.filterByText($(options.parentElement + ' .filter-unselected'), options.timeout, options.parentElement).scrollTop(0).sortOptions();
-            selected.filterByText($(options.parentElement + ' .filter-selected'), options.timeout, options.parentElement).scrollTop(0).sortOptions();
+            if (options.sort) {
+                unselected.filterByText($(options.parentElement + ' .filter-unselected'), options.timeout, options.parentElement).scrollTop(0).sortOptions();
+                selected.filterByText($(options.parentElement + ' .filter-selected'), options.timeout, options.parentElement).scrollTop(0).sortOptions();
+            }
 
             handleMovement(options);
         });
@@ -158,8 +162,10 @@
             }
         });
 
-        selected.filterByText($(options.parentElement + ' .filter-selected'), options.timeout, options.parentElement).scrollTop(0).sortOptions();
-        unselected.filterByText($(options.parentElement + ' .filter-unselected'), options.timeout, options.parentElement).scrollTop(0).sortOptions();
+        if (options.sort) {
+            selected.filterByText($(options.parentElement + ' .filter-selected'), options.timeout, options.parentElement).scrollTop(0).sortOptions();
+            unselected.filterByText($(options.parentElement + ' .filter-unselected'), options.timeout, options.parentElement).scrollTop(0).sortOptions();
+        }
     }
 
     /** Constructs the jQuery plugin after the elements have been retrieved. */
